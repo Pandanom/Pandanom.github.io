@@ -7,50 +7,63 @@ var numbers = ['1', '2', '3', '4', '5', '6', '7', '8']
 var display = 'block'
 
 const renderBoard = (isWhite) =>{
-  renderLetters(!isWhite)
+  renderLetters(!isWhite);
   for (var i = 0; i < letters.length; ++i){
-    var row = document.createElement('DIV')
-    row.className = 'row'
+    var row = document.createElement('DIV');
+    row.className = 'row';
 	
-	var el = document.createElement('DIV')
-	el.innerText = isWhite ? (i+1) : (letters.length + 1 - i)
-	el.className = 'symbol'
-	row.appendChild(el)
+	var el = document.createElement('DIV');
+	el.innerText = !isWhite ? (i+1) : (letters.length - i);
+	el.className = 'symbol';
+	row.appendChild(el);
 	
     for (var j = 0; j < letters.length; ++j){
-      var square = document.createElement('DIV')
-      square.className = 'square'
-      square.style.backgroundColor = (i+j) % 2 === 0 ? 'white' : 'black'
-	  square.id = 'cell' + i + j
-      row.appendChild(square)
+      var square = document.createElement('DIV');
+      square.className = 'square';
+      square.style.backgroundColor = (i+j) % 2 === 0 ? 'white' : 'black';
+	  square.id = 'cell' + i + j;
+      row.appendChild(square);
     }
-    board.appendChild(row)
+    board.appendChild(row);
   }   
  }
 
 renderLetters = (reverse) => {
-	var row = document.createElement('DIV') 
-	row.className = 'row'
-	var el = document.createElement('DIV')
-	el.innerText = ''
-	el.className = 'symbol'
-	row.appendChild(el)
-	var f = (x,i)=>{ 
-		var el = document.createElement('DIV')
-		el.innerText = x
-		el.className = 'symbol'
-		row.appendChild(el)
+		var row = document.createElement('DIV');
+		row.className = 'row';
+		var el = document.createElement('DIV');
+		el.innerText = '';
+		el.className = 'symbol';
+		row.appendChild(el);
+		var f = (x,i)=>{ 
+			var el = document.createElement('DIV');
+			el.innerText = x;
+			el.className = 'symbol';
+			row.appendChild(el);
+		}
+		if(reverse)
+		{
+			letters.slice().reverse().forEach(f);
+		}
+		else
+		{
+			letters.forEach(f);
+		}
+		board.appendChild(row);
 	}
-	if(reverse)
-	{
-		letters.slice().reverse().forEach(f)
-	}
-	else
-	{
-		letters.forEach(f)
-	}
-	board.appendChild(row)
+	var chatBox = document.getElementById("chatbox");
+	var current = new Date();	
+	chatBox.innerHTML += '['+current.getHours() + ':' + current.getMinutes()+ ':' + current.getSeconds() + ']Hello World!\n';
+	renderBoard(true);
 }
 
-renderBoard(true)
+function sendMsg(){
+	var msg = document.getElementById("usermsg");
+	var chatBox = document.getElementById("chatbox");
+	if(msg.value){
+	var current = new Date();	
+	chatBox.innerHTML += '['+current.getHours() + ':' + current.getMinutes()+ ':' + current.getSeconds() + ']' + msg.value + '\n';
+	msg.value = '';
+	}
 }
+
