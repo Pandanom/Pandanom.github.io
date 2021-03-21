@@ -105,7 +105,7 @@
 
 .newsTopic{
 	color: white;
-	font-size: 1.1em;
+	font-size: 1.5vw;
 }
 
 .newsTopic > a{
@@ -114,7 +114,7 @@
 
 .newsText{
 	color: white;
-	font-size: 0.8em;
+	font-size: 1vw;
 }
 
 .newsTopic > a > img{
@@ -168,6 +168,7 @@ a {
   height: 100%;
   display: inline-block;
   margin: 0px;
+  font-size: 2vw;
 }
 
 #boardOuter{
