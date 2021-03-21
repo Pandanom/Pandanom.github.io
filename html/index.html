@@ -31,8 +31,9 @@
 			</div>
 		</header>
 		
-		<main>
-			<div class="chat">
+		<main class="gameMain">
+			<div class="sidebox">
+				<label>Chat</label>
 				<textarea readonly id="chatbox"></textarea>
 				<form class="message" onsubmit="sendMsg();return false">
 					<input name="usermsg" type="text" id="usermsg"/>
@@ -45,8 +46,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="moves">
-			<p1>lastmoves</p1>
+			<div class="sidebox">
+				<label>History</label>
+				<textarea readonly id="historyBox"></textarea>
 			</div>
 		</main>
 		

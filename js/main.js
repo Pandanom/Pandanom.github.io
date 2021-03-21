@@ -46,6 +46,7 @@ renderLetters = (reverse) => {
 			letters.slice().reverse().forEach(f);
 		}
 		else
+			
 		{
 			letters.forEach(f);
 		}
@@ -53,17 +54,26 @@ renderLetters = (reverse) => {
 	}
 	var chatBox = document.getElementById("chatbox");
 	var current = new Date();	
-	chatBox.innerHTML += '['+current.getHours() + ':' + current.getMinutes()+ ':' + current.getSeconds() + ']Hello World!\n';
+	chatBox.innerHTML += '['+ getTimeStr() + ']Hello World!\n';
 	renderBoard(true);
+}
+
+var getTimeStr = ()=>{
+	var current = new Date();
+	let h =  current.getHours() > 9 ? current.getHours() : '0' + current.getHours();
+	let m =  current.getMinutes() > 9 ? current.getMinutes() : '0' + current.getMinutes();
+	let s =  current.getSeconds() > 9 ? current.getSeconds() : '0' + current.getSeconds();
+	return h + ':' + m + ':' + s; 
 }
 
 function sendMsg(){
 	var msg = document.getElementById("usermsg");
 	var chatBox = document.getElementById("chatbox");
 	if(msg.value){
-	var current = new Date();	
-	chatBox.innerHTML += '['+current.getHours() + ':' + current.getMinutes()+ ':' + current.getSeconds() + ']' + msg.value + '\n';
+	//var current = new Date();	
+	chatBox.innerHTML += '[' + getTimeStr() + ']' + msg.value + '\n';
 	msg.value = '';
+	chatBox.scrollTop = chatBox.scrollHeight;
 	}
 }
 

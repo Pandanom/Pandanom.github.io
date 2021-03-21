@@ -18,21 +18,20 @@
   margin: 0 10px;
 }
 
-.chat{
+.sidebox{
 	background-color: #444;
 	width: 25%;
 	height:100%;
 	margin: 0 10px;
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
+
 .message{
-	display: flex;
-	flex-direction: row;
 	width:80%;
-	margin:0 auto;
-    margin-top:2%;
 }
 
 #usermsg {
@@ -46,6 +45,19 @@
 }
 
 #chatbox {
+	resize: none;
+	color: black;
+	font-size: 0.5em;
+    text-align:left;
+    margin:0 auto;
+    margin-top:5%;
+    background:#eee;
+    height:80%;
+    width:80%;
+    border:1px solid #ACD8F0;
+    overflow:auto; }
+	
+#historyBox {
 	resize: none;
 	color: black;
 	font-size: 0.5em;
@@ -72,6 +84,44 @@
 	margin: 0 10px;
 }
 
+.newsBox{
+	display: flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	width: 80%;
+	height: 100%;
+	align-items:flex-start;
+	justify-content: space-evenly;
+	align-content: space-evenly;
+	padding:5px;
+}
+
+.newsTextBox{
+	margin:5px;
+	background-color: #444;
+	width:30%;
+	padding:15px;
+}
+
+.newsTopic{
+	color: white;
+	font-size: 1.1em;
+}
+
+.newsTopic > a{
+	color: white;
+}
+
+.newsText{
+	color: white;
+	font-size: 0.8em;
+}
+
+.newsTopic > a > img{
+	 width: 95%;
+	 padding: 2.5%;
+}
+
 main{
 	color: white;
 	font-size: 2em;
@@ -80,8 +130,9 @@ main{
 	padding: 30px 30px;
 	align-items: center;
 	justify-content: center;
-	height: 75vh
 }
+
+.gameMain { height: 75vh;}
 
 body,
 html {
