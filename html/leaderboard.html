@@ -11,6 +11,9 @@
 		<link rel="stylesheet" href="../css/navbar.css">
 		
 		<script src="../js/main.js"></script>
+		<script type="text/javascript">
+			window.onload = updateLeaderboardView;
+        </script>
 	</head>
 	<body>
 		<header>
@@ -22,12 +25,21 @@
 			</div>
 			<div class="header-container">
 				<div class="header-body">
-					<h1>Leaderboard</h1>
+					<h1>Last tournament leaderboard</h1>
 				</div>
 			</div>
 		</header>
 		
 		<main>
+			<div class="lbContainer">
+				<div class="row">
+						<div class="lbName head"><i>Player name</i></div>
+						<div class="lbSpacer"></div>
+						<div class="lbScore head"><i>Score</i></div>
+				</div>
+				<div id="leaderboard" class="lbContainer data">
+				</div>
+			</div>
 		</main>
 		
 		<footer>

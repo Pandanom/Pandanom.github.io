@@ -210,3 +210,66 @@ a {
    transform: rotateY(0deg);
   }
 }
+
+
+.lbContainer {
+	display: flex;
+	flex-direction:row;
+	flex-wrap:wrap;
+	width: 80%;
+	height: 100%;
+	align-items:flex-start;
+	justify-content: space-evenly;
+	align-content: space-evenly;
+	padding:5px;
+	background-color: #444;
+	
+}
+.lbContainer.data {
+	width: 100%;
+}
+
+.lbSpacer{
+	width:1%;
+	border-right: 1px solid white;
+	margin-top: 1%;
+	margin-left: 1%;
+}
+
+.lbName{
+	width: 65%;
+	margin-top: 1%;
+	margin-left: 3%;
+}
+
+.lbName.head{
+	border-bottom: 1px solid white;
+	margin-left: 2%;
+	width: 66%;
+}
+
+.lbScore{
+	margin-top: 1%;
+	margin-left: 3%;
+	width: 20%;
+}
+
+.lbScore.head{
+	border-bottom: 1px solid white;
+	margin-left: 2%;
+	width: 21%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
