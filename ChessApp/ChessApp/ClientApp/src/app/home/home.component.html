@@ -1,0 +1,21 @@
+<main class="gameMain">
+  <div class="sidebox">
+    <label>Chat</label>
+    <textarea readonly id="chatbox"></textarea>
+    <form class="message" onsubmit="sendMsg();return false">
+      <input name="usermsg" type="text" id="usermsg" />
+      <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+    </form>
+  </div>
+  <div class="board">
+    <div id='boardOuter'>
+      <div id='boardInner'>
+      </div>
+    </div>
+  </div>
+  <div class="sidebox">
+    <label>History</label>
+    <textarea readonly id="historyBox"></textarea>
+  </div>
+</main>
+
