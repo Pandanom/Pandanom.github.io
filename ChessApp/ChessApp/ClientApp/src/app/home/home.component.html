@@ -1,9 +1,14 @@
+  <div class="header-container">
+    <div class="header-body">
+      <label>Chess</label>
+    </div>
+  </div>
 <main class="gameMain">
   <div class="sidebox">
     <label>Chat</label>
     <textarea readonly id="chatbox"></textarea>
-    <form class="message" onsubmit="sendMsg();return false">
-      <input name="usermsg" type="text" id="usermsg" />
+    <form class="message" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+      <input name="usermsg" type="text" id="usermsg" formControlName="usermsg" />
       <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
     </form>
   </div>

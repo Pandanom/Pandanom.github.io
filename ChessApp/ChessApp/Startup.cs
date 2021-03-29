@@ -61,7 +61,6 @@ namespace ChessApp
 
                 if (env.IsDevelopment())
                 {
-                    //spa.UseAngularCliServer(npmScript: "start");
                     spa.UseProxyToSpaDevelopmentServer("http://chessapp.angular.app:4200");
                 }
             });

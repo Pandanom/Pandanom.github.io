@@ -3,42 +3,76 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ChessApp.Models;
+using ChessApp.Controllers.Helpers;
+using System.Net.Http;
 
 namespace ChessApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Users")]
     public class SampleDataController : Controller
     {
+        UserDataProvider _userData = new UserDataProvider();
+        PasswordHelper _ph = new PasswordHelper();
         private static string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
         [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        public IEnumerable<User> GetUsers()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
+            return _userData.GetUsers();
         }
 
-        public class WeatherForecast
+        [HttpPost("[action]")]
+        public IActionResult CreateUser([FromBody]UserNew u)
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
+            User tAdd = new User();
+            tAdd.Email = u.email;
+            tAdd.Login = u.login;
+            tAdd.Password = _ph.GetHash(u.password);
+            tAdd.UserId = 0;
+            var nUser = _userData.AddUser(tAdd);
+            if (nUser.UserId != 0)
+                return Ok(nUser);
+            return Ok(new User());
+        }
 
-            public int TemperatureF
+        [HttpPost("[action]")]
+        public IActionResult LogIn([FromBody]UserLogin u)
+        {
+            var users = _userData.GetUsers();
+            foreach (var us in users)
             {
-                get
+                if (us.Email == u.email && us.Password == _ph.GetHash(u.password))
                 {
-                    return 32 + (int)(TemperatureC / 0.5556);
+                    return Ok(us);
                 }
             }
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAcc(int id)
+        {
+            if(_userData.DeleteUser(id))
+                return Ok("User " + id + " deleted successfully");
+            return Ok();
+        }
+
+
+        public class UserNew
+        {     
+            public string email { get; set; }
+            public string password { get; set; }
+            public string login { get; set; }
+        }
+
+        public class UserLogin
+        {
+            public string email { get; set; }
+            public string password { get; set; }
         }
     }
 }

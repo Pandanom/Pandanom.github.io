@@ -1,13 +1,33 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit{
-  constructor() {
-    
+  public PageTitle = 'Chess'
+  messageForm = this.formBuilder.group({
+    usermsg: ''
+  });
+
+  constructor(private formBuilder: FormBuilder,) {
+
   }
+
+  onSubmit(): void {
+    console.warn('Message was sent', this.messageForm.get('usermsg').value);
+    var chatBox = document.getElementById("chatbox");
+    if (this.messageForm.get('usermsg').value) {
+      chatBox.innerHTML += '[' + this.getTimeStr() + ']' + this.messageForm.get('usermsg').value + '\n';
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    this.messageForm.reset();
+  }
+
 
   ngOnInit() {
     var board = document.getElementById('boardInner');
@@ -75,5 +95,6 @@ export class HomeComponent implements OnInit{
     let s = current.getSeconds() > 9 ? current.getSeconds() : '0' + current.getSeconds();
     return h + ':' + m + ':' + s;
   }
+
 }
 
