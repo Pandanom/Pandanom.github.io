@@ -48,7 +48,7 @@ namespace ChessApp.Controllers.Helpers
                 u.Email = String.Format("User{0}@gmail.com", i + 1);
                 u.Login = String.Format("User{0}{1}", i + 1, rng.Next(1000));
                 u.Password = _ph.GetHash(u.Login);
-                u.Score = rng.Next(1000);
+                u.Score = rng.Next(2000);
                 AddUser(u);
             }
         }

@@ -20,7 +20,14 @@
   </div>
   <div class="sidebox">
     <label>History</label>
-    <textarea readonly id="historyBox"></textarea>
+    <!--<textarea readonly id="historyBox"></textarea>-->
+    <form class="message" [formGroup]="coForm" (ngSubmit)="onConnect()">
+      <input name="usermsg" type="text" id="usermsg" formControlName="usermsg" />
+      <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+    </form>
+    <form class="message" [formGroup]="crForm" (ngSubmit)="onCreate()">
+      <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+    </form>
   </div>
 </main>
 

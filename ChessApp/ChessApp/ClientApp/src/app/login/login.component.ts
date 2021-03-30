@@ -5,6 +5,7 @@ import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { User } from '../user';
 import { DataProviderService } from '../data-provider.service';
 
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -83,7 +84,6 @@ export class LoginComponent implements OnInit {
       });
     }
   }
-
 
   ngOnInit() {
   }

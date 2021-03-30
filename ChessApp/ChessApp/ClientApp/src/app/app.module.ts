@@ -11,6 +11,7 @@ import { NewsComponent } from './news/news.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { LoginComponent } from './login/login.component';
 import { CabinetComponent } from './cabinet/cabinet.component';
+import { DataProviderService } from './data-provider.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { CabinetComponent } from './cabinet/cabinet.component';
       { path: 'cabinet', component: CabinetComponent },
     ])
   ],
-  providers: [],
+  providers: [DataProviderService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -21,7 +21,7 @@
         "styles.css"
       ],
       "scripts": [
-        "main.js"
+        "WebSocketManager.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

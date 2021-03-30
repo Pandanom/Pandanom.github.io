@@ -33,6 +33,7 @@ namespace ChessApp.Controllers
             tAdd.Login = u.login;
             tAdd.Password = _ph.GetHash(u.password);
             tAdd.UserId = 0;
+            tAdd.Score = 1000;
             var nUser = _userData.AddUser(tAdd);
             if (nUser.UserId != 0)
                 return Ok(nUser);

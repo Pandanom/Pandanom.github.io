@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-
+import { GameManagerService } from '../game-manager.service';
 
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  providers: [GameManagerService]
 })
 export class HomeComponent implements OnInit{
   public PageTitle = 'Chess'
@@ -13,7 +14,14 @@ export class HomeComponent implements OnInit{
     usermsg: ''
   });
 
-  constructor(private formBuilder: FormBuilder,) {
+  coForm = this.formBuilder.group({
+    usermsg: ''
+  });
+
+  crForm = this.formBuilder.group({
+  });
+
+  constructor(private formBuilder: FormBuilder, private gameService: GameManagerService) {
 
   }
 
@@ -21,13 +29,22 @@ export class HomeComponent implements OnInit{
     console.warn('Message was sent', this.messageForm.get('usermsg').value);
     var chatBox = document.getElementById("chatbox");
     if (this.messageForm.get('usermsg').value) {
-      chatBox.innerHTML += '[' + this.getTimeStr() + ']' + this.messageForm.get('usermsg').value + '\n';
+      var msg = '[' + this.getTimeStr() + ']' + this.messageForm.get('usermsg').value + '\n'
+      chatBox.innerHTML += msg;
       chatBox.scrollTop = chatBox.scrollHeight;
+      this.gameService.sendMessage(msg);
     }
-
     this.messageForm.reset();
   }
 
+  onConnect(): void {
+    this.gameService.connectToGame(this.coForm.get('usermsg').value);
+    this.coForm.reset();
+  }
+
+  onCreate(): void {
+    this.gameService.createGame();
+  }
 
   ngOnInit() {
     var board = document.getElementById('boardInner');

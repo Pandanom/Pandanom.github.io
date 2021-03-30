@@ -14,6 +14,7 @@ export class NavMenuComponent implements OnInit {
   constructor(private dataService: DataProviderService) {   
   }
 
+
   ngOnInit() {
     this.username = this.dataService.getCurentUser().login;
   }
