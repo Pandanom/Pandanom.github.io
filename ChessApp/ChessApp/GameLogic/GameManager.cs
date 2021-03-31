@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,6 +38,10 @@ namespace ChessApp.GameLogic
                 g.host = u;
                 g.id = o.gameKey;
                 g.hostCS = socketId;
+                g.board = new Figure[8, 8];
+                for (int i = 0; i < 8; i++)
+                    for (int j = 0; j < 0; j++)
+                        g.board[i,j] = new Figure();
                 Games[o.gameKey] = g;                
             }
             else
@@ -91,8 +96,8 @@ namespace ChessApp.GameLogic
                 foreach (var g in Games)
                 {
                     var arr = new object[1];
-                    arr[0] = g;
-                    if(g.Value.hostCS != null)
+                    arr[0] = JsonConvert.SerializeObject(g.Value);
+                    if (g.Value.hostCS != null)
                         await Startup.gameHandler.InvokeClientMethodAsync(g.Value.hostCS, "sendGame", arr);
                     if(g.Value.guestCS != null)
                         await Startup.gameHandler.InvokeClientMethodAsync(g.Value.guestCS, "sendGame", arr);

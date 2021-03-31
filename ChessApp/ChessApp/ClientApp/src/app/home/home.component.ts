@@ -1,52 +1,101 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { GameManagerService } from '../game-manager.service';
-
+import { DataProviderService } from '../data-provider.service';
+import { Input } from '@angular/compiler/src/core';
+import { Game } from '../game';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  providers: [GameManagerService]
+  styleUrls: ['./home.component.css'],
+  providers: [GameManagerService, DataProviderService]
 })
 export class HomeComponent implements OnInit{
-  public PageTitle = 'Chess'
+  public PageTitle: string;
+
   messageForm = this.formBuilder.group({
     usermsg: ''
   });
 
-  coForm = this.formBuilder.group({
-    usermsg: ''
+  gameForm = this.formBuilder.group({
+    gameId: '',
+    gameType: 'r',
+    isRaiting: false
   });
 
-  crForm = this.formBuilder.group({
-  });
 
-  constructor(private formBuilder: FormBuilder, private gameService: GameManagerService) {
+  constructor(private formBuilder: FormBuilder,
+    private gameService: GameManagerService,
+    private dataService: DataProviderService) { }
 
+  closeGameForm(): void {
+    document.getElementById("myForm").style.display = "none";
+    this.gameForm.reset();
+  }
+
+  openGameForm(): void {
+    document.getElementById("myForm").style.display = "block";
   }
 
   onSubmit(): void {
-    console.warn('Message was sent', this.messageForm.get('usermsg').value);
     var chatBox = document.getElementById("chatbox");
     if (this.messageForm.get('usermsg').value) {
-      var msg = '[' + this.getTimeStr() + ']' + this.messageForm.get('usermsg').value + '\n'
+
+      var un = this.dataService.getCurentUser();
+      var msg = '[' + this.getTimeStr() + ']' + un.login +': '+ this.messageForm.get('usermsg').value + '\n'
       chatBox.innerHTML += msg;
       chatBox.scrollTop = chatBox.scrollHeight;
       this.gameService.sendMessage(msg);
-    }
+    }   
     this.messageForm.reset();
   }
 
   onConnect(): void {
-    this.gameService.connectToGame(this.coForm.get('usermsg').value);
-    this.coForm.reset();
-  }
-
-  onCreate(): void {
-    this.gameService.createGame();
+    var gameId = this.gameForm.get('gameId').value;
+    var gameType = this.gameForm.get('gameType').value;
+    var isRaiting = this.gameForm.get('isRaiting').value;
+    console.debug('gameForm:', this.gameForm);
+    if (gameId) { // try connect
+      console.log('Try to connect: ', gameId);
+      this.gameService.connectToGame(gameId);
+    }
+    else { // create game
+      switch (gameType) {
+        case 'hw': {
+          this.gameService.createGame(isRaiting, 0);
+          break;
+        }
+        case 'hb': {
+          this.gameService.createGame(isRaiting, 1);
+          break;
+        }
+        default: {
+          this.gameService.createGame(isRaiting, Math.floor(Math.random() * 2));
+          break;
+        }
+      }
+    }
+    
+    this.closeGameForm();
   }
 
   ngOnInit() {
+    this.PageTitle = 'Chess';
+    this.gameService.cbOnConnect = (t: string) => { this.PageTitle = 'Game Id:' + t; }
+
+    this.gameService.cbOnGameUpdate = (g: Game) => {
+      //console.warn(g);
+      this.PageTitle = 'Game Id:' + g.id;
+
+      var chatBox = document.getElementById("chatbox");
+      chatBox.innerHTML = g.chat;
+
+
+      
+    }
+
+
     var board = document.getElementById('boardInner');
     var numContainer = document.getElementById('numberContainer');
     var letterContainer = document.getElementById('letterContainer');
@@ -68,12 +117,20 @@ export class HomeComponent implements OnInit{
         for (var j = 0; j < letters.length; ++j) {
           var square = document.createElement('DIV');
           square.className = 'square';
-          square.style.backgroundColor = (i + j) % 2 === 0 ? 'white' : 'black';
+          square.style.backgroundColor = (i + j) % 2 === 0 ? 'white' : 'grey';
           square.id = 'cell' + i + j;
+
+          var img = document.createElement('IMG');
+          img.setAttribute("src", "../assets/img/pwnW.png");
+          img.className = 'figure';
+          img.id = 'f' + i + j;
+          square.appendChild(img);
           row.appendChild(square);
         }
         board.appendChild(row);
       }
+      var qwe = document.getElementById('f34');
+      qwe.setAttribute("src", "../assets/img/pwnB.png");
     }
     
     var renderLetters = (reverse) => {

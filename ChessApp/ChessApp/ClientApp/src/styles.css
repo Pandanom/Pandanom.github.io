@@ -186,8 +186,17 @@ a {
   width: 11.1%;
   height: 100%;
   display: inline-block;
-  margin: 0px;
+  margin: 0;
+  padding: 0;
   animation: fadeIn 1s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.figure {
+  height: 100%;
 }
 
 .symbol {

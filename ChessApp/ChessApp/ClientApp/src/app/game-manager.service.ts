@@ -2,6 +2,8 @@ import { Injectable, Inject } from '@angular/core';
 import { DataProviderService } from './data-provider.service';
 import * as WebSocketManager from '../WebSocketManager';
 import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
+import { Game } from './game';
+
 
 @Injectable()
 export class GameManagerService {
@@ -12,6 +14,9 @@ export class GameManagerService {
 
   public connection: any;
   public gameId: string;
+  public cbOnConnect: (t: string) => void;
+  public cbOnGameUpdate: (g: Game) => void;
+  public game: Game;
   sendMessage(message: string)
   {
     //SendMessage(string serializedUser, string gameId, string message)
@@ -21,13 +26,13 @@ export class GameManagerService {
       message);
 
   }
-  createGame()
+  createGame(isRaiting?: boolean, direction?: number)
   {
     var options = {} as GameOptions;
-    options.direction = GameDirection.hostWhite;
+    options.direction = direction;
     options.gameKey = '';
     options.isHost = true;
-    options.isRaiting = false;
+    options.isRaiting = isRaiting;
 
     this.createConnection(options, true);
   }
@@ -48,15 +53,16 @@ export class GameManagerService {
     //onconnect
     this.connection.connectionMethods.onConnected = () => {
       if (setKey) {
-        alert(this.connection.connectionId);
+        //alert(this.connection.connectionId);
         options.gameKey = this.connection.connectionId;
       }
       this.gameId = options.gameKey; 
       this.connection.invoke("ConnectedGame",
         this.connection.connectionId,
       JSON.stringify(this.dataService.getCurentUser()),
-      JSON.stringify(options));
-      console.warn('Connected: ', this.connection.connectionId);
+        JSON.stringify(options));
+      this.cbOnConnect(this.connection.connectionId);
+      //console.warn('Connected: ', this.connection.connectionId);
     };
 
     //ondisconnect
@@ -65,11 +71,18 @@ export class GameManagerService {
       console.warn('Disconnected: ', id);
     };
 
-    this.connection.clientMethods["sendGame"] = (qwe) => {
-      console.warn(qwe);
+    this.connection.clientMethods["sendGame"] = (g) => {
+      console.log(JSON.parse(g));
+      this.game = JSON.parse(g);
+      this.gameId = this.game.id;
+      this.cbOnGameUpdate(this.game);
     };
 
     this.connection.start();
+    var c = this.connection;
+    window.onbeforeunload = function (event) {
+      c.invoke("DisconnectedGame", c.connectionId, "");
+    };
   }
 
 }
