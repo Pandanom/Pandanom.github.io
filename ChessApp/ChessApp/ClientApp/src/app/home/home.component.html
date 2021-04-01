@@ -1,0 +1,54 @@
+  <div class="header-container">
+    <div class="header-body">
+      <label>{{PageTitle}}</label>
+      <button class="open-button" (click)="openGameForm()">Open Form</button>
+      <div class="form-popup" id="myForm">
+        <form [formGroup]="gameForm" (ngSubmit)="onConnect()" class="form-container">
+          <h1>Connect to game</h1>
+          <label for="gameId"><b>Game id</b></label>
+          <input type="text" placeholder="(leave empty if you want create new game)" name="gameId" id="gameId" formControlName="gameId">
+          <label for="gameType">Choose game type</label>
+          <div class="rb">
+            <input type="radio" value="hw" formControlName="gameType">
+            <span>Host white</span>
+          </div>
+          <div class="rb">
+            <input type="radio" value="hb" formControlName="gameType">
+            <span>Host black</span>
+          </div>
+          <div class="rb">
+            <input type="radio" value="r" formControlName="gameType">
+            <span>Random</span>
+          </div>
+          <label for="isRaiting">Make game raiting</label>
+          <div class="rb">
+            <input type="checkbox" value="Raiting game" formControlName="isRaiting">
+            <span>Raiting game</span>
+          </div>
+          <button type="submit" class="btn">Create or connect</button>
+          <button type="button" class="btn cancel" (click)="closeGameForm()">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+<main class="gameMain" id="game">
+  <div class="sidebox">
+    <label>Chat</label>
+    <textarea readonly id="chatbox"></textarea>
+    <form class="message" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+      <input name="usermsg" type="text" id="usermsg" formControlName="usermsg"/>
+      <input name="submitmsg" type="submit" id="submitmsg" value="Send" />
+    </form>
+  </div>
+  <div class="board">
+    <div id='boardOuter'>
+      <div id='boardInner'>
+      </div>
+    </div>
+  </div>
+  <div class="sidebox">
+    <label>History</label>
+    <textarea readonly id="historyBox"></textarea>
+  </div>
+</main>
+

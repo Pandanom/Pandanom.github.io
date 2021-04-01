@@ -1,0 +1,18 @@
+version: '3.4'
+
+services:
+  chessapp:
+    image: ${DOCKER_REGISTRY-}chessapp
+    build:
+      context: .
+      dockerfile: ChessApp/Dockerfile
+  chessapp.angular.app:
+    image: ${DOCKER_REGISTRY-}chessangularapp
+    build:
+      context: .
+      dockerfile: chessapp/ClientApp/Dockerfile
+    ports:
+      - "4200:4200" 
+      - "49153:49153"
+    volumes:
+      - ./chessapp/ClientApp:/app

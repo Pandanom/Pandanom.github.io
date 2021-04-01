@@ -1,0 +1,13 @@
+<main>
+  <div class="sidebox accform">
+
+    <label>
+      Your Account Stats
+    </label>
+    <label>Email: {{user.email}}</label>
+    <label>Username: {{user.login}}</label>
+    <label>Score: {{user.score}}</label>
+    <button (click)="signOutBtn()">Sign Out</button>
+    <button class="delbutt" (click)="deleteBtn()">Delete Account</button>
+</div>
+</main>
