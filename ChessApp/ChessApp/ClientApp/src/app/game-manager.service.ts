@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { DataProviderService } from './data-provider.service';
 import * as WebSocketManager from '../WebSocketManager';
 import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
-import { Game } from './game';
+import { Game, Figure, FigureType, Side, GameOptions, GameDirection } from './game';
 
 
 @Injectable()
@@ -16,6 +16,7 @@ export class GameManagerService {
   public gameId: string;
   public cbOnConnect: (t: string) => void;
   public cbOnGameUpdate: (g: Game) => void;
+  public cbOnMove: () => void;
   public game: Game;
   sendMessage(message: string)
   {
@@ -45,8 +46,21 @@ export class GameManagerService {
     this.createConnection(options, false);
   }
 
+  makeMove(xy1: string, xy2: string) {
+    console.warn('Try make a move: ', xy1, xy2);
+
+    this.connection.invoke("MakeMove", 
+      JSON.stringify(this.dataService.getCurentUser()),
+      this.game.id,
+      xy1 + xy2);
+  }
+
 
   createConnection(options: GameOptions, setKey: boolean) {
+    if (this.connection) {
+      this.connection.invoke("DisconnectedGame", c.connectionId);
+      this.connection.end();
+    }
     this.connection = new WebSocketManager.Connection(this.baseUrl.replace('http', 'ws') + 'server');
 
     
@@ -72,30 +86,21 @@ export class GameManagerService {
     };
 
     this.connection.clientMethods["sendGame"] = (g) => {
-      console.log(JSON.parse(g));
       this.game = JSON.parse(g);
       this.gameId = this.game.id;
       this.cbOnGameUpdate(this.game);
     };
 
+    this.connection.clientMethods["sendMoveResp"] = (rsp) => {
+      console.log(rsp);
+      this.cbOnMove();
+    };
+
     this.connection.start();
     var c = this.connection;
     window.onbeforeunload = function (event) {
-      c.invoke("DisconnectedGame", c.connectionId, "");
+      c.invoke("DisconnectedGame", c.connectionId);
     };
   }
 
-}
-
-export class GameOptions {
-  constructor(
-    public isRaiting?: boolean,
-    public gameKey?: string,
-    public isHost?: boolean,
-    public direction?: GameDirection) { }
-}
-
-enum GameDirection {
-  hostBlack = 1,
-  hostWhite = 0,
 }

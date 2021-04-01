@@ -16,6 +16,13 @@ namespace ChessApp.GameLogic
         {
         }
 
+
+        public async Task MakeMove(string u, string gK, string xy1xy2)
+        {
+            var user = JsonConvert.DeserializeObject<User>(u);
+            await GameManager.Instance.TryMove(user, gK, xy1xy2);
+        }
+
         public async Task ConnectedGame(string socketId, string serializedUser, string serializedOptions)
         {
             var user = JsonConvert.DeserializeObject<User>(serializedUser);
@@ -29,9 +36,21 @@ namespace ChessApp.GameLogic
             await GameManager.Instance.ProccessMessage(user, gameId, message);
         }
 
-        public async Task DisconnectedGame(string socketId, string pewpew)
+        public async Task DisconnectedGame(string socketId)
         {
-            GameManager.Instance.Games.TryRemove(socketId, out Game pew);
+            foreach (var g in GameManager.Instance.Games)
+            {
+                if (g.Value.hostCS == socketId)
+                {
+                    g.Value.history += GameManager.Instance.GetLogMove(g.Value.host.login + " disconnect");
+                    g.Value.hostCS = null;
+                }
+                else if (g.Value.guestCS == socketId)
+                {
+                    g.Value.history += GameManager.Instance.GetLogMove(g.Value.guest.login + " disconnect");
+                    g.Value.guestCS = null;
+                }
+            }            
         }
 
         public async Task OnMove(string socketId, string gameData)
@@ -67,7 +86,7 @@ namespace ChessApp.GameLogic
             await base.OnDisconnected(socket);
 
             var socketId = WebSocketConnectionManager.GetId(socket);
-
+            await DisconnectedGame(socketId);
             var message = new Message
             {
                 MessageType = MessageType.Text,

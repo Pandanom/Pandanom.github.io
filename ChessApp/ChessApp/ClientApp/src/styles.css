@@ -195,6 +195,14 @@ a {
   justify-content: center;
 }
 
+.sHighlight {
+  border: 2px solid orangered;
+  border-radius: 7px;
+  outline: none;
+  box-shadow: 0 0 10px orangered;
+}
+
+
 .figure {
   height: 100%;
 }

@@ -7,10 +7,10 @@ namespace ChessApp.Models
 {
     public class User
     {
-        public int UserId { get; set; }
-        public string Email { get; set; }
-        public int Password { get; set; }
-        public string Login { get; set; }
-        public int Score { get; set; }
+        public int userId { get; set; }
+        public string email { get; set; }
+        public int password { get; set; }
+        public string login { get; set; }
+        public int score { get; set; }
     }
 }

@@ -29,13 +29,13 @@ namespace ChessApp.Controllers
         public IActionResult CreateUser([FromBody]UserNew u)
         {
             User tAdd = new User();
-            tAdd.Email = u.email;
-            tAdd.Login = u.login;
-            tAdd.Password = _ph.GetHash(u.password);
-            tAdd.UserId = 0;
-            tAdd.Score = 1000;
+            tAdd.email = u.email;
+            tAdd.login = u.login;
+            tAdd.password = _ph.GetHash(u.password);
+            tAdd.userId = 0;
+            tAdd.score = 1000;
             var nUser = _userData.AddUser(tAdd);
-            if (nUser.UserId != 0)
+            if (nUser.userId != 0)
                 return Ok(nUser);
             return Ok(new User());
         }
@@ -46,7 +46,7 @@ namespace ChessApp.Controllers
             var users = _userData.GetUsers();
             foreach (var us in users)
             {
-                if (us.Email == u.email && us.Password == _ph.GetHash(u.password))
+                if (us.email == u.email && us.password == _ph.GetHash(u.password))
                 {
                     return Ok(us);
                 }

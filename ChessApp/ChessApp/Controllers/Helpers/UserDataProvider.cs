@@ -24,16 +24,36 @@ namespace ChessApp.Controllers.Helpers
             return _users;
         }
 
+        public void EditUser(User user)
+        {
+            foreach(var u in _users)
+                if(u.userId == user.userId)
+                {
+                    u.email = user.email;
+                    u.login = user.login;
+                    u.password = user.password;
+                    u.score = user.score;
+                }
+        }
+
+        public User GetUser(int id)
+        {
+            foreach (var u in _users)
+                if (u.userId == id)
+                    return u;
+            return null;
+        }
+
         public User AddUser(User user)
         {
             int id = 1;
             foreach (var u in GetUsers())
             {
-                id = id > u.UserId ? id : u.UserId;
-                if (u.Email == user.Email)
+                id = id > u.userId ? id : u.userId;
+                if (u.email == user.email)
                     return user;
             }
-            user.UserId = id + 1;
+            user.userId = id + 1;
             _users.Add(user);
             UpdateUsers();
             return user;
@@ -45,10 +65,10 @@ namespace ChessApp.Controllers.Helpers
             for (int i = 0; i < 20; i++)
             {
                 User u = new User();
-                u.Email = String.Format("User{0}@gmail.com", i + 1);
-                u.Login = String.Format("User{0}{1}", i + 1, rng.Next(1000));
-                u.Password = _ph.GetHash(u.Login);
-                u.Score = rng.Next(2000);
+                u.email = String.Format("User{0}@gmail.com", i + 1);
+                u.login = String.Format("User{0}{1}", i + 1, rng.Next(1000));
+                u.password = _ph.GetHash(u.login);
+                u.score = rng.Next(2000);
                 AddUser(u);
             }
         }
@@ -57,7 +77,7 @@ namespace ChessApp.Controllers.Helpers
         {
             for (int i = 0; i < _users.Count; i++)
             {
-                if (_users[i].UserId == id)
+                if (_users[i].userId == id)
                 {
                     _users.RemoveAt(i);
                     UpdateUsers();
